@@ -118,4 +118,90 @@ public class AlgoPractice {
 
         System.out.println(count);
     }
+
+    /** DNA 비밀번호 A C G T */
+    int[] conditionCnts; // A C G T 각각 몇개여야 하는지
+    int[] checkConditionCnts; // A C G T 각각 실제로 몇개인지 체크한 값
+    int passConditionCnt; // 각 문자가 조건에 맞았는지 확인. 4가 되면 최종 조건 일치! (result++)
+    public void slidingWindow() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int wholeTextCnt = Integer.parseInt(st.nextToken());
+        int checkTextCnt = Integer.parseInt(st.nextToken());
+
+        char[] textArray = new char[wholeTextCnt];
+        textArray = br.readLine().toCharArray();
+        System.out.println("입력받은 문자열: " + Arrays.toString(textArray));
+
+        st = new StringTokenizer(br.readLine());
+        conditionCnts = new int[4]; // A C G T 각각 몇개여야 하는지
+        checkConditionCnts = new int[4]; // A C G T 각각 실제로 몇개인지 체크한 값
+        passConditionCnt = 0; // 각 문자가 조건에 맞았는지 확인. 4가 되면 최종 조건 일치! (result++)
+        for (int i = 0; i < 4; i++) {
+            conditionCnts[i] = Integer.parseInt(st.nextToken());
+            // 0회 이상이면 볼 필요없음
+            if (conditionCnts[i] == 0) {
+                passConditionCnt++;
+            }
+        }
+
+        int result = 0; // 조건에 일치하는 문자열 경우의 수
+
+        // 최초 1번 바로 넣기
+        for (int i = 0; i < checkTextCnt; i++) {
+            add(textArray[i]);
+        }
+        if (passConditionCnt == 4) result++;
+
+        // 슬라이딩 윈도우
+        for (int endIndex = checkTextCnt; endIndex < wholeTextCnt; endIndex++) {
+            int startIndex = endIndex - checkTextCnt;
+            add(textArray[endIndex]);
+            remove(textArray[startIndex]);
+            if (passConditionCnt == 4) result++;
+        }
+        System.out.println("최종 경우의 수는 " + result);
+        br.close();
+    }
+
+    private void add(char c) {
+        switch (c) {
+            case 'A':
+                checkConditionCnts[0]++;
+                if (checkConditionCnts[0] == conditionCnts[0]) passConditionCnt++;
+                break;
+            case 'C':
+                checkConditionCnts[1]++;
+                if (checkConditionCnts[1] == conditionCnts[1]) passConditionCnt++;
+                break;
+            case 'G':
+                checkConditionCnts[2]++;
+                if (checkConditionCnts[2] == conditionCnts[2]) passConditionCnt++;
+                break;
+            case 'T':
+                checkConditionCnts[3]++;
+                if (checkConditionCnts[3] == conditionCnts[3]) passConditionCnt++;
+                break;
+        }
+    }
+    private void remove(char c) {
+        switch (c) {
+            case 'A':
+                if (checkConditionCnts[0] == conditionCnts[0]) passConditionCnt--;
+                checkConditionCnts[0]--;
+                break;
+            case 'C':
+                if (checkConditionCnts[1] == conditionCnts[1]) passConditionCnt--;
+                checkConditionCnts[1]--;
+                break;
+            case 'G':
+                if (checkConditionCnts[2] == conditionCnts[2]) passConditionCnt--;
+                checkConditionCnts[2]--;
+                break;
+            case 'T':
+                if (checkConditionCnts[3] == conditionCnts[3]) passConditionCnt--;
+                checkConditionCnts[3]--;
+                break;
+        }
+    }
 }

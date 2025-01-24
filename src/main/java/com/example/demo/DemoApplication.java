@@ -40,7 +40,8 @@ public class DemoApplication {
 //		maniddo();
 //		service.makeScoreArg();
 //		service.makeBetweenSum();
-		service.getCaseCount2();
+//		service.getCaseCount2();
+		service.slidingWindow();
 		Instant finish = Instant.now(); // <= 끝나는 지점을 지정해준다
 		long elapsedTime = Duration.between(start, finish).toMillis(); // <=시작와 끝 사이의 경과시간을 계산해준다. ms단위로 끊었다.
 		System.out.println("elapsedTime(ms) : " + elapsedTime); // <= 값을 실행창에 출력
