@@ -3,16 +3,16 @@ package com.example.demo.algo1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Scanner;
+import java.util.Stack;
 import java.util.StringTokenizer;
 
 /**
  * Do it! 알고리즘 코딩테스트 with JAVA
+ * (Data Structure)
  * */
-public class AlgoPractice {
+public class DataStructure {
     /** 배열 평균값 */
     public void makeScoreArg() {
         Scanner sc = new Scanner(System.in);
@@ -203,5 +203,43 @@ public class AlgoPractice {
                 checkConditionCnts[3]--;
                 break;
         }
+    }
+
+    /** Stack */
+    public void makeStack() {
+        Scanner sc = new Scanner(System.in);
+        int stackSize = Integer.parseInt(sc.nextLine());
+        int[] array = new int[stackSize];
+        for (int i = 0; i < stackSize; i++) {
+            array[i] = Integer.parseInt(sc.nextLine());
+        }
+        System.out.println("스택 배열 값 : " + Arrays.toString(array));
+
+        Stack<Integer> stack = new Stack<>();
+        StringBuffer sb = new StringBuffer();
+        int num = 1; // 1부터 시작
+        boolean result = true;
+        for (int i = 0; i < array.length; i++) {
+            int targetNum = array[i];
+            if (targetNum >= num) {
+                while (targetNum >= num) {
+                    stack.push(num);
+                    num++;
+                    sb.append("+\n");
+                }
+                stack.pop();
+                sb.append("-\n");
+            } else { // targetNum < num
+                int popNum = stack.pop();
+                if (popNum > targetNum) {
+                    System.out.println("NO");
+                    result = false;
+                    break;
+                } else {
+                    sb.append("-\n");
+                }
+            }
+        }
+        if (result) System.out.println(sb.toString());
     }
 }
