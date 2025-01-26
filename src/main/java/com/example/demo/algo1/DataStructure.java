@@ -256,4 +256,30 @@ public class DataStructure {
         }
         System.out.println("마지막 Queue에 남은 값 : " + queue);
     }
+
+    /** Priority Queue 우선순위 큐 */
+    public void makePriorityQueue() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int queueSize = Integer.parseInt(br.readLine());
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1 ,o2) -> {
+           int abs1 = Math.abs(o1);
+           int abs2 = Math.abs(o2);
+           if (abs1 == abs2) {
+               // 절대값이 같으면, 음수 우선
+               return o1 - o2;
+//               return o1 > o2 ? 1 : -1;
+           }
+           return abs1 - abs2; // 절대값 작은 값 우선
+        });
+        for (int i = 0; i < queueSize; i++) {
+            int request = Integer.parseInt(br.readLine());
+            if (request == 0) {
+                if (queue.isEmpty()) System.out.println("queue가 비었습니다 : 0");
+                else System.out.println("queue에서 절대값이 가장 작은 값 : " + queue.poll());
+            } else {
+                queue.add(request);
+                System.out.println("queue 값 추가 및 자동정렬 : " + queue);
+            }
+        }
+    }
 }
