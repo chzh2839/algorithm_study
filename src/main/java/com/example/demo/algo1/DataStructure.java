@@ -3,10 +3,7 @@ package com.example.demo.algo1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Stack;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Do it! 알고리즘 코딩테스트 with JAVA
@@ -240,6 +237,23 @@ public class DataStructure {
                 }
             }
         }
-        if (result) System.out.println(sb.toString());
+        if (result) System.out.println(sb);
+    }
+
+    /** Queue */
+    public void makeQueue() {
+        Scanner sc = new Scanner(System.in);
+        int queueSize = sc.nextInt();
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 1; i <= queueSize; i++) {
+            queue.add(i);
+        }
+        System.out.println("처음 Queue에 담긴 값 목록 : " + queue);
+
+        while (queue.size() > 1) {
+            queue.poll();
+            queue.add(queue.poll());
+        }
+        System.out.println("마지막 Queue에 남은 값 : " + queue);
     }
 }
