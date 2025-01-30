@@ -32,10 +32,9 @@ public class DemoApplication {
 	}
 
 	public static void main(String[] args) throws IOException {
-		DataStructure dataStructure = new DataStructure();
-		Sorting sorting = new Sorting();
 		Instant start = Instant.now();  // <= 시작점을 지정해준다
 //		maniddo();
+		DataStructure dataStructure = new DataStructure();
 //		dataStructure.makeScoreArg();
 //		dataStructure.makeBetweenSum();
 //		dataStructure.getCaseCount2();
@@ -43,8 +42,10 @@ public class DemoApplication {
 //		dataStructure.makeStack();
 //		dataStructure.makeQueue();
 //		dataStructure.makePriorityQueue();
+		Sorting sorting = new Sorting();
 //		sorting.useBubbleSorting();
-		sorting.useSelectionSorting();
+//		sorting.useSelectionSorting();
+		sorting.useQuickSorting();
 		Instant finish = Instant.now(); // <= 끝나는 지점을 지정해준다
 		long elapsedTime = Duration.between(start, finish).toMillis(); // <=시작와 끝 사이의 경과시간을 계산해준다. ms단위로 끊었다.
 		System.out.println("elapsedTime(ms) : " + elapsedTime); // <= 값을 실행창에 출력
