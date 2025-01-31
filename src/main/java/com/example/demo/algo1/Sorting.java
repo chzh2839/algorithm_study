@@ -81,9 +81,13 @@ public class Sorting {
             // 정렬할 원소가 1개 이하라는 의미니까, 바로 return
              return;
         }
-        int pivotPoint = partition(array, start, end);
-        quickSort(array, start, pivotPoint - 1); // pivot보다 작은 값으로 이루어진 부분집합 다시 반복
-        quickSort(array, pivotPoint, end); // pivot보다 큰 값으로 이루어진 부분집합 다시 반복
+//        int pivotPoint = partition(array, start, end);
+//        quickSort(array, start, pivotPoint - 1); // pivot보다 작은 값으로 이루어진 부분집합 다시 반복
+//        quickSort(array, pivotPoint, end); // pivot보다 큰 값으로 이루어진 부분집합 다시 반복
+
+        int pivotPoint = partitionByMiddlePivot(array, start, end);
+        quickSort(array, start, pivotPoint);
+        quickSort(array, pivotPoint+1, end);
     }
     private int partition(int[] array, int start, int end) {
         System.out.println("start:: " + start + ", end:: " + end);
@@ -155,6 +159,26 @@ public class Sorting {
         System.out.println("중간 체크 array:: " + Arrays.toString(array));
 //        return highPoint; // 두 요소가 swap되면, 피벗이었던 요소는 highPoint에 위치하므로 highPoint를 반환한다
         return lowPoint; // 왼쪽 값으로 피벗 선정했다면 반대로 lowPoint를 반환
+    }
+    private int partitionByMiddlePivot(int[] array, int start, int end) {
+        System.out.println("start:: " + start + ", end:: " + end);
+        int lowPoint = start-1;
+        int highPoint = end+1;
+        int pivotIndex = (start + end)/2;
+        int pivot = array[pivotIndex]; // 부분집합/배열의 가운데 값을 피벗으로 선정
+
+        while(true) {
+            do {
+                lowPoint++;
+            } while(array[lowPoint] < pivot);
+            do {
+                highPoint--;
+            } while(array[highPoint] > pivot && lowPoint <= highPoint);
+            if (lowPoint >= highPoint) {
+                return highPoint;
+            }
+            swap(array, lowPoint, highPoint);
+        }
     }
     private void swap(int[] array, int meetPoint, int pivotPoint) {
         int temp = array[meetPoint];
