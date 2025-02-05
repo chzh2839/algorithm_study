@@ -185,4 +185,68 @@ public class Sorting {
         array[meetPoint] = array[pivotPoint];
         array[pivotPoint] = temp;
     }
+
+    /** merge sort */
+    int[] sorted;
+    public void useMergeSort() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int arraySize = Integer.parseInt(br.readLine());
+        int[] numArray = new int[arraySize];
+        sorted = new int[arraySize];
+        for (int i = 0; i < arraySize; i++) {
+            numArray[i] = Integer.parseInt(br.readLine());
+        }
+        System.out.println("배열 값 : " + Arrays.toString(numArray));
+
+        mergeSort(numArray, 0, numArray.length - 1);
+        sorted = null;
+        System.out.println("----------- 정렬완료 - 배열 값 : " + Arrays.toString(numArray));
+    }
+    private void mergeSort(int[] array, int left, int right) {
+        if (left == right) return; // 부분집합이 1개일때
+        int mid = (left + right) / 2; // 절반위치
+        mergeSort(array, left, mid);		// 절반 중 왼쪽 부분리스트(left ~ mid)
+        mergeSort(array, mid + 1, right);	// 절반 중 오른쪽 부분리스트(mid+1 ~ right)
+
+        merge(array, left, mid, right);		// 병합작업
+    }
+    private void merge(int[] array, int left, int mid, int right) {
+        int leftStartIndex = left; // 왼쪽 부분집합 시작
+        int rightStartIndex = mid + 1; // 오른쪽 부분집합 시작
+        int index = left; // 채워넣읗 sorted의 인덱스
+
+        while (leftStartIndex <= mid && rightStartIndex <= right) {
+            if (array[leftStartIndex] <= array[rightStartIndex]) {
+                sorted[index] = array[leftStartIndex];
+                index++;
+                leftStartIndex++;
+            } else {
+                sorted[index] = array[rightStartIndex];
+                index++;
+                rightStartIndex++;
+            }
+        }
+
+        // 왼쪽 부분집합이 먼저 모두 sorted에 채워졌고, 오른쪽 부분집합엔 원소가 남아있을 경우
+        if (leftStartIndex > mid) {
+            while (rightStartIndex <= right) {
+                // 오른쪽 부분집합의 나머지 원소 sorted에 넣기
+                // 각 부분집합의 원소들은 정렬이 된 상태이므로.
+                sorted[index] = array[rightStartIndex];
+                index++;
+                rightStartIndex++;
+            }
+        } else { // 오른쪽 부분집합이 먼져 모두 sorted에 채워졌고, 왼쪽 부분집합엔 원소가 남아있을 경우
+            while (leftStartIndex <= left) {
+                sorted[index] = array[leftStartIndex];
+                index++;
+                leftStartIndex++;
+            }
+        }
+
+        // 정렬된 새 배열을 기존의 배열에 복사
+        for (int i = left; i <= right; i++) {
+            array[i] = sorted[i];
+        }
+    }
 }
