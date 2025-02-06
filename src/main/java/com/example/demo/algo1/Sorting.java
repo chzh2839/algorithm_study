@@ -187,6 +187,8 @@ public class Sorting {
     }
 
     /** merge sort */
+    // 참고 자료: https://st-lab.tistory.com/233
+    // 참고 자료: https://velog.io/@hansung1459/%EC%A0%95%EB%A0%AC-Java-%EB%B3%91%ED%95%A9-%ED%95%A9%EB%B3%91-%EC%A0%95%EB%A0%AC-Merge-Sort
     int[] sorted;
     public void useMergeSort() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -198,17 +200,53 @@ public class Sorting {
         }
         System.out.println("배열 값 : " + Arrays.toString(numArray));
 
-        mergeSort(numArray, 0, numArray.length - 1);
-        sorted = null;
+//        mergeSortTopDown(numArray, 0, numArray.length - 1);
+        mergeSortBottomUp(numArray, 0, numArray.length - 1);
         System.out.println("----------- 정렬완료 - 배열 값 : " + Arrays.toString(numArray));
     }
-    private void mergeSort(int[] array, int left, int right) {
+    // Top-Down 형식 - 재귀 형태로 stackOverFlow가 발생할 수 있음
+    private void mergeSortTopDown(int[] array, int left, int right) {
         if (left == right) return; // 부분집합이 1개일때
         int mid = (left + right) / 2; // 절반위치
-        mergeSort(array, left, mid);		// 절반 중 왼쪽 부분리스트(left ~ mid)
-        mergeSort(array, mid + 1, right);	// 절반 중 오른쪽 부분리스트(mid+1 ~ right)
+        mergeSortTopDown(array, left, mid);		// 절반 중 왼쪽 부분리스트(left ~ mid)
+        mergeSortTopDown(array, mid + 1, right);	// 절반 중 오른쪽 부분리스트(mid+1 ~ right)
 
         merge(array, left, mid, right);		// 병합작업
+    }
+    // Bottom-Up 형식
+    private void mergeSortBottomUp(int[] array, int left, int right) {
+        /*
+         * 배열의 개수가 1, 2, 4, 8.. 이렇게 아래서부터 위로 증가한다고 보면 된다.
+         * top down 방식은
+         * 예로 배열 크기가 8일때, 8 -> 4, 4 -> 2,2 / 2,2 -> 1,1 / 1,1   // 1,1 / 1,1
+         * 했던 것을 반대로 한다고 보면 된다.
+         * size의 반복횟수가 길이와 같은 이유는,
+         * 배열의 개수가 홀수일 경우 길이 -1만큼 넣기 때문에 수가 짝수이다.
+         * 근데 만약, 길이가 <=가 아닌 <만 해버리면, 마지막 남은 한 수는
+         * 확인하지 못하는 경우가 발생하기 때문에 반드시 <=를 해줘야 하는 것이다.
+         */
+        for (int size = 1; size <= array.length; size = size * 2) {
+            for (int i = 0; i <= array.length - size; i += (size * 2)) {
+                int leftStartIndex = i;
+                /*
+                 * 우리가 흔히 미드를 구할 떄 (0 + arr.length-1) / 2 로 구했던 것을 알 것이다.
+                 * 이를, length가 곧 size가 되었다고 생각하면 된다.
+                 * 그럼 /2를 안하는 이유는??..
+                 * 필자 생각으로는, 이미 배열을 두 개로 나눈 상태이기 때문에 /2를 해주지 않는 것이라 이해했다.
+                 */
+                int mid = leftStartIndex + size - 1;
+                /*
+                 * r 역시 마찬가지다. 하지만, 여기서 l과 r은 비교 대상이 되는 배열로,
+                 * 결국 2 * size가 곧 비교 대상 배열의 마지막 인덱스가 될 것이다.
+                 * 근데 왜 right와 비교해서 최솟값을??
+                 * size가 커지면, 또 l값이 커지면 right보다 커지는 순간이 반드시 오기 때문이다.
+                 */
+                int rightStartIndex = Math.min((leftStartIndex + (size * 2) - 1), right);
+
+                // 분할 한 두 배열을 합치기
+                merge(array, leftStartIndex, mid, rightStartIndex);
+            }
+        }
     }
     private void merge(int[] array, int left, int mid, int right) {
         int leftStartIndex = left; // 왼쪽 부분집합 시작
@@ -246,7 +284,9 @@ public class Sorting {
 
         // 정렬된 새 배열을 기존의 배열에 복사
         for (int i = left; i <= right; i++) {
+            System.out.print(sorted[i] + " ");
             array[i] = sorted[i];
         }
+        System.out.println();
     }
 }
