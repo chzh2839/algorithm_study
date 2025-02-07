@@ -289,4 +289,56 @@ public class Sorting {
         }
         System.out.println();
     }
+
+    /** radix sorting */
+    public void useRadixSort() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int arraySize = Integer.parseInt(br.readLine());
+        int[] numArray = new int[arraySize];
+        for (int i = 0; i < arraySize; i++) {
+            numArray[i] = Integer.parseInt(br.readLine());
+        }
+        System.out.println("배열 값 : " + Arrays.toString(numArray));
+
+        radixSort(numArray);
+        System.out.println("----------- 정렬완료 - 배열 값 : " + Arrays.toString(numArray));
+    }
+    private void radixSort(int[] array) {
+        // 자리수를 지정할 Radix변수와 , 최대자릿수를 가리킬 최대값 구하기
+        final int maxNumber = getMaxNumber(array);
+        int radix = 1; // 일의 자리부터 시작
+
+        // bucket 초기화. 0~9까지니까 총 10개
+        Queue<Integer>[] bucket = new Queue[10];
+        for (int i = 0; i < 10; i++) {
+            bucket[i] = new LinkedList<>();
+        }
+
+        while (radix <= maxNumber) {
+            // bucket에 담기
+            for (int i = 0; i < array.length; i++) {
+                bucket[(array[i]/radix) % 10].add(array[i]);
+            }
+
+            // bucket에서 꺼내기
+            for (int arrayIndex = 0, bucketIndex = 0; bucketIndex < 10; bucketIndex++) {
+                while (!bucket[bucketIndex].isEmpty()) {
+                    array[arrayIndex] = bucket[bucketIndex].poll();
+                    arrayIndex++;
+                }
+            }
+
+            // 다음 자릿수로 넘어가기
+            radix *= 10;
+        }
+    }
+    private int getMaxNumber(int[] array) {
+        int max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (max < array[i]) {
+                max = array[i];
+            }
+        }
+        return max;
+    }
 }
