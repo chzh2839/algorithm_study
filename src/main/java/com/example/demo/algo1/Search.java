@@ -12,7 +12,8 @@ import java.util.*;
 public class Search {
     public void doProcess() throws IOException {
 //        getConnectedComponent();
-        searchMaze();
+//        searchMaze();
+        binarySearch();
     }
 
     /** DFS - 연결요소 구하기 */
@@ -118,6 +119,46 @@ public class Search {
                         queue.add(new int[]{x, y});
                     }
                 }
+            }
+        }
+    }
+
+    /** Binary Search */
+    private void binarySearch() {
+        Scanner sc = new Scanner(System.in);
+        int arraySize = sc.nextInt();
+        int[] array = new int[arraySize];
+        for (int i = 0; i < arraySize; i++) {
+            array[i] = sc.nextInt();
+        }
+        Arrays.sort(array);
+        System.out.println("array 정렬 완료 : " + Arrays.toString(array));
+
+        int searchNumberCnt = sc.nextInt();
+        for (int i = 0; i < searchNumberCnt; i++) {
+            int searchNumber = sc.nextInt();
+            // array 배열안에 searchNumber가 있으면 1반환, 없으면 0반환
+            boolean found = false;
+            int startIndex = 0;
+            int endIndex = arraySize - 1;
+            while (startIndex <= endIndex) {
+                int middleIndex = (startIndex + endIndex) / 2;
+                int middleValue = array[middleIndex];
+                if (middleValue > searchNumber) {
+                    endIndex = middleIndex - 1;
+                } else if (middleValue < searchNumber) {
+                    startIndex = middleIndex + 1;
+                } else {
+                    // middleValue == searchNumber
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found) {
+                System.out.println("1");
+            } else {
+                System.out.println("0");
             }
         }
     }
