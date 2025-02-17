@@ -8,7 +8,8 @@ import java.util.Scanner;
  * */
 public class PrimeNumber {
     public void doProcess() {
-        getPrimeNumbers();
+//        getPrimeNumbers();
+        euclidean();
     }
 
     /** 소수 구하기
@@ -34,6 +35,31 @@ public class PrimeNumber {
         System.out.println("--- 소수 찾기 완료 ---");
         for (int i = n; i < m; i++) {
             if (array[i] != 0) System.out.println(array[i]);
+        }
+    }
+
+    /** 유클리드 호제법으로 최대공약수 구하기! */
+    int rs = 0;
+    private void euclidean() {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        gcd(n, m);
+        System.out.printf("%d과 %d의 최대공약수 : %d", n, m, rs);
+        System.out.println();
+    }
+    private void gcd(int a, int b) {
+        int bigNum = a;
+        int smallNum = b;
+        if (a < b) {
+            bigNum = b;
+            smallNum = a;
+        }
+        int mod = bigNum % smallNum;
+        if (mod == 0) {
+            rs = smallNum;
+        } else {
+            gcd(smallNum, mod);
         }
     }
 }
