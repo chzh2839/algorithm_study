@@ -33,7 +33,8 @@ public class DemoApplication {
 	public static void main(String[] args) throws IOException {
 		Instant start = Instant.now();  // <= 시작점을 지정해준다
 //		maniddo();
-		DataStructure dataStructure = new DataStructure();
+
+//		DataStructure dataStructure = new DataStructure();
 //		dataStructure.makeScoreArg();
 //		dataStructure.makeBetweenSum();
 //		dataStructure.getCaseCount2();
@@ -41,20 +42,21 @@ public class DemoApplication {
 //		dataStructure.makeStack();
 //		dataStructure.makeQueue();
 //		dataStructure.makePriorityQueue();
-		Sorting sorting = new Sorting();
+
+//		Sorting sorting = new Sorting();
 //		sorting.useBubbleSorting();
 //		sorting.useSelectionSorting();
 //		sorting.useQuickSorting();
 //		sorting.useMergeSort();
 //		sorting.useRadixSort();
 
-		Search search = new Search();
+//		Search search = new Search();
 //		search.doProcess();
 
-		Greedy greedy = new Greedy();
+//		Greedy greedy = new Greedy();
 //		greedy.doProcess();
 
-		PrimeNumber pn = new PrimeNumber();
+//		PrimeNumber pn = new PrimeNumber();
 //		pn.doProcess();
 
 		Graph graph = new Graph();
