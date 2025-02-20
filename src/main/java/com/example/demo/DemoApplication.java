@@ -10,7 +10,6 @@ import java.util.*;
 
 @SpringBootApplication
 public class DemoApplication {
-
 	public static void maniddo() {
 		String[] array = {"퍼플", "엑셀", "시오", "항정", "마빡", "벙글", "르네", "요비", "코카", "애쉬", "라준", "제제", "호피"};
 
