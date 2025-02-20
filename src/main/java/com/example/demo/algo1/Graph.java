@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * */
 public class Graph {
     public void doProcess() throws IOException {
-        checkBipartiteGraph();
+//        checkBipartiteGraph();
     }
 
     /** 이분 그래프 (bipartite graph) 판별하기
