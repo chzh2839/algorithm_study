@@ -3,8 +3,7 @@ package com.example.demo.algo1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Do it! 알고리즘 코딩테스트 with JAVA
@@ -13,7 +12,8 @@ import java.util.StringTokenizer;
 public class Graph {
     public void doProcess() throws IOException {
 //        checkBipartiteGraph();
-        unionFind();
+//        unionFind();
+        topologicalSort();
     }
 
     /** 이분 그래프 (bipartite graph) 판별하기
@@ -120,6 +120,44 @@ public class Graph {
         if (a == parent[a]) return a;
         else {
             return parent[a] = find(parent[a]); // **** value를 index로 바꿔서 또 찾기
+        }
+    }
+
+    /** 위상 정렬 - 줄 세우기
+     * */
+    private void topologicalSort() {
+        Scanner sc = new Scanner(System.in);
+        int nodeCnt = sc.nextInt();
+        int queryCnt = sc.nextInt();
+        ArrayList<ArrayList<Integer>> array = new ArrayList<>(); // 인접리스트
+        for (int i = 0; i <= nodeCnt; i++) { // 1부터 nodeCnt까지 정렬해야 하니까
+            array.add(new ArrayList<>());
+        }
+
+        int[] inDegree = new int[nodeCnt+1]; // 진입차수 배열
+        for (int i = 0; i < queryCnt; i++) {
+            int start = sc.nextInt();
+            int end = sc.nextInt();
+            array.get(start).add(end);
+            inDegree[end]++; // *** 진입차수 배열에 데이터 저장하는 부분!
+        }
+
+        // 위상정렬
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 1; i <= nodeCnt; i++) {
+            if (inDegree[i] == 0) queue.offer(i); // 차수배열이 0이면 큐에 담기
+        }
+        while(!queue.isEmpty()) {
+            // 정렬된 값 출력 부분
+            int now = queue.poll();
+            System.out.print(now + " ");
+
+            for (int next: array.get(now)) {
+                inDegree[next]--; // 타깃 노드 차수배열 1씩 차감
+                if (inDegree[next] == 0) {
+                    queue.offer(next); // 차수배열이 0이면 큐에 담기
+                }
+            }
         }
     }
 }
