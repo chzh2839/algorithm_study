@@ -216,8 +216,15 @@ public class Graph {
 
         while (!q.isEmpty()) {
             Node current = q.poll(); // 오름차순했으니까, 제알 앞이 우선순위가 가장 높은 것
-            if (!visitedArray[current.index]) {
-                visitedArray[current.index] = true; // 방문처리
+//            if (!visitedArray[current.index]) {
+//                visitedArray[current.index] = true; // 방문처리
+//            }
+
+            /* 방문 배열 없이 처리하는 방법
+            * - 해당 노드에 대한 distance 값은 여러번 갱신될 수 있어서 큐에 자주 들어갈 수있지만,
+            *  한번 방문됬다면 distance의 값은 최소값이다. */
+            if (distanceArray[current.index] < current.cost) {
+                continue;
             }
 
             for (Node next: graph.get(current.index)) {
@@ -225,7 +232,7 @@ public class Graph {
                 // 2. 현재 노드를 거쳐서 다른 노드로 이동하는 거리가 더 짧을 경우
                 /* ex. (distanceArray[1](=0) + cost(1->2로가는 비용))랑
                 * distanceArray[2](=MAX_VALUE) 비교해서 더 낮은 것으로 distanceArray[2]의 cost 변경 */
-                if (!visitedArray[next.index] && (distanceArray[next.index] > current.cost + next.cost)) {
+                if (/*!visitedArray[next.index] &&*/ (distanceArray[next.index] > current.cost + next.cost)) {
                     distanceArray[next.index] = current.cost + next.cost;
                     q.add(new Node(next.index, distanceArray[next.index])); // next.index로 가는 최단거리 세팅
                 }
