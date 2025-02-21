@@ -13,7 +13,8 @@ public class Graph {
     public void doProcess() throws IOException {
 //        checkBipartiteGraph();
 //        unionFind();
-        topologicalSort();
+//        topologicalSort();
+        getShortestDistance();
     }
 
     /** 이분 그래프 (bipartite graph) 판별하기
@@ -156,6 +157,77 @@ public class Graph {
                 inDegree[next]--; // 타깃 노드 차수배열 1씩 차감
                 if (inDegree[next] == 0) {
                     queue.offer(next); // 차수배열이 0이면 큐에 담기
+                }
+            }
+        }
+    }
+
+    /** 다익스트라 - 최단거리 구하기 */
+    class Node {
+        int index, cost;
+        public Node(int index, int cost) {
+            this.index = index;
+            this.cost = cost;
+        }
+    }
+    ArrayList<ArrayList<Node>> graph = new ArrayList<>();
+    boolean[] visitedArray;
+    int[] distanceArray;
+    private void getShortestDistance() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int nodeCnt = Integer.parseInt(st.nextToken());
+        int edgeCnt = Integer.parseInt(st.nextToken());
+        int startIndex = Integer.parseInt(st.nextToken());
+
+        visitedArray = new boolean[nodeCnt+1];
+        distanceArray = new int[nodeCnt+1];
+        Arrays.fill(distanceArray, Integer.MAX_VALUE); // 거리 배열을 최댓값으로 세팅
+        for (int i = 0; i <= nodeCnt; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // 가중치가 포함된 인접 그래프 세팅
+        for (int i = 0; i < edgeCnt; i++) {
+            st = new StringTokenizer(br.readLine());
+            int start = Integer.parseInt(st.nextToken());
+            int end = Integer.parseInt(st.nextToken());
+            int cost = Integer.parseInt(st.nextToken());
+            graph.get(start).add(new Node(end, cost));
+        }
+
+        // 다익스트라 알고리즘
+        dijkstra(startIndex);
+
+        System.out.println(startIndex + "부터 각 노드 간 걸리는 최단거리 확인 결과 : ");
+        for (int i = 1; i <= nodeCnt; i++) {
+            System.out.print(distanceArray[i] == Integer.MAX_VALUE ? "INF" : distanceArray[i]);
+            System.out.print(" ");
+        }
+        System.out.println();
+    }
+    private void dijkstra(int startIndex) {
+        // 가중치 기준으로 오름차순. 비용이 낮은 것이 우선순위가 높음.
+        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
+
+        // 출발노드의 가중치는 자기자신이니까 무조건 0
+        distanceArray[startIndex] = 0;
+        q.add(new Node(startIndex, 0));
+
+        while (!q.isEmpty()) {
+            Node current = q.poll(); // 오름차순했으니까, 제알 앞이 우선순위가 가장 높은 것
+            if (!visitedArray[current.index]) {
+                visitedArray[current.index] = true; // 방문처리
+            }
+
+            for (Node next: graph.get(current.index)) {
+                // 1. 방문하지 않았고
+                // 2. 현재 노드를 거쳐서 다른 노드로 이동하는 거리가 더 짧을 경우
+                /* ex. (distanceArray[1](=0) + cost(1->2로가는 비용))랑
+                * distanceArray[2](=MAX_VALUE) 비교해서 더 낮은 것으로 distanceArray[2]의 cost 변경 */
+                if (!visitedArray[next.index] && (distanceArray[next.index] > current.cost + next.cost)) {
+                    distanceArray[next.index] = current.cost + next.cost;
+                    q.add(new Node(next.index, distanceArray[next.index])); // next.index로 가는 최단거리 세팅
                 }
             }
         }
