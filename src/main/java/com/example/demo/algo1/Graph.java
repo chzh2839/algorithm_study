@@ -14,7 +14,8 @@ public class Graph {
 //        checkBipartiteGraph();
 //        unionFind();
 //        topologicalSort();
-        getShortestDistance();
+//        getShortestDistance();
+        getFastestTime();
     }
 
     /** 이분 그래프 (bipartite graph) 판별하기
@@ -163,13 +164,6 @@ public class Graph {
     }
 
     /** 다익스트라 - 최단거리 구하기 */
-    class Node {
-        int index, cost;
-        public Node(int index, int cost) {
-            this.index = index;
-            this.cost = cost;
-        }
-    }
     ArrayList<ArrayList<Node>> graph = new ArrayList<>();
     boolean[] visitedArray;
     int[] distanceArray;
@@ -238,5 +232,87 @@ public class Graph {
                 }
             }
         }
+    }
+
+    /** 벨만-포드 - A->B까지 가는 가장 빠른 시간 구하기
+     * N개의 도시, M개의 버스노선. A(시작도시) -> B(도착도시) 걸리는 시간(C)
+     * C == 0이면 순간이동, C < 0 이면 타임머신으로 시간을 되돌아가는 경우.
+     * 출력 : 무한히 오래 전으로 되돌릴 수 있다면 첫째 줄에 -1을 출력.
+     *      1번 도시에서 출발해 2번 도시, 3번 도시, ..., N번 도시로 가는 가장 빠른 시간을 순서대로.
+     *      만약 해당 도시로 가는 경로가 없다면 대신 -1을 출력. */
+    BufferedReader bufferedReader;
+    StringTokenizer stringTokenizer;
+    long INF = Long.MAX_VALUE;
+    int cityCnt, edgeCnt;
+    private void getFastestTime() throws IOException {
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+        cityCnt = Integer.parseInt(stringTokenizer.nextToken());
+        edgeCnt = Integer.parseInt(stringTokenizer.nextToken());
+
+        long[] times = new long[cityCnt + 1]; // 최단시간배열
+        Arrays.fill(times, INF);
+        times[1] = 0; // 1부터 시작. 시작점은 0
+
+        boolean isMinusCycle = bellmanFord(times);
+        if (isMinusCycle) System.out.println("-1");
+        else {
+            for (int i = 2; i < times.length; i++) {
+                if (times[i] == INF) {
+                    System.out.println("-1");
+                } else {
+                    System.out.println(times[i]);
+                }
+            }
+        }
+
+        bufferedReader.close();
+    }
+    private boolean bellmanFord(long[] times) throws IOException {
+        boolean isMinusCycle = false;
+
+        Edge[] eg = new Edge[edgeCnt];
+        for (int i = 0; i < edgeCnt; i++) {
+            stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+            int start = Integer.parseInt(stringTokenizer.nextToken());
+            int end = Integer.parseInt(stringTokenizer.nextToken());
+            long time = Long.parseLong(stringTokenizer.nextToken());
+            eg[i] = new Edge(start, end, time);
+        }
+
+        int cityCnt = times.length - 1;
+        for (int i = 0; i < cityCnt + 1; i++) {
+            for (int j = 0; j < edgeCnt; j++) {
+                Edge current = eg[j];
+                if (times[current.start] == INF) continue;
+
+                if (times[current.end] > times[current.start] + current.time) {
+                    times[current.end] = times[current.start] + current.time;
+                    if (i == cityCnt) {
+                        isMinusCycle = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return isMinusCycle;
+    }
+}
+
+class Node {
+    int index, cost;
+    public Node(int index, int cost) {
+        this.index = index;
+        this.cost = cost;
+    }
+}
+
+class Edge {
+    int start, end;
+    long time;
+    public Edge(int start, int end, long time) {
+        this.start = start;
+        this.end = end;
+        this.time = time;
     }
 }
