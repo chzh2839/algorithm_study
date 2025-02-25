@@ -15,7 +15,8 @@ public class Graph {
 //        unionFind();
 //        topologicalSort();
 //        getShortestDistance();
-        getFastestTime();
+//        getFastestTime();
+        getPath();
     }
 
     /** 이분 그래프 (bipartite graph) 판별하기
@@ -296,6 +297,54 @@ public class Graph {
             }
         }
         return isMinusCycle;
+    }
+
+    /** 플로이드-워셜 - 경로찾기 */
+    long[][] graph2;
+    private void getPath() throws IOException {
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+        int nodeCnt = Integer.parseInt(stringTokenizer.nextToken());
+        int queryCnt = Integer.parseInt(stringTokenizer.nextToken());
+
+        graph2 = new long[nodeCnt][nodeCnt];
+        for (int i = 0; i < nodeCnt; i++) {
+            Arrays.fill(graph2[i], INF);
+            graph2[i][i] = 0; // 본인한테 가는 건 0
+        }
+        for (int i = 0; i < queryCnt; i++) {
+            stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+            int start = Integer.parseInt(stringTokenizer.nextToken());
+            int end = Integer.parseInt(stringTokenizer.nextToken());
+            int cost = Integer.parseInt(stringTokenizer.nextToken());
+
+            // 가는 경로가 하나가 아닐 수 있다. 따라서 그 중 최소 비용을 저장해두면 된다.
+            graph2[start][end] = Math.min(graph2[start][end], cost);
+            graph2[end][start] = Math.min(graph2[end][start], cost);
+        }
+        bufferedReader.close();
+
+        floydWarshall(nodeCnt);
+
+        for (int i = 0; i < nodeCnt; i++) {
+            for (int j = 0; j < nodeCnt; j++) {
+                if(graph2[i][j] == INF) {
+                    System.out.print("INF ");
+                } else {
+                    System.out.print(graph2[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+    private void floydWarshall(int nodeCnt) {
+        for (int k = 0; k < nodeCnt; k++) {
+            for (int s = 0; s < nodeCnt; s++) {
+                for (int e = 0; e < nodeCnt; e++) {
+                    graph2[s][e] = Math.min(graph2[s][e], graph2[s][k] + graph2[k][e]);
+                }
+            }
+        }
     }
 }
 
