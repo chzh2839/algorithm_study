@@ -16,7 +16,8 @@ public class Graph {
 //        topologicalSort();
 //        getShortestDistance();
 //        getFastestTime();
-        getPath();
+//        getPath();
+        mst();
     }
 
     /** 이분 그래프 (bipartite graph) 판별하기
@@ -345,6 +346,46 @@ public class Graph {
                 }
             }
         }
+    }
+
+    /** 최소 신장 트리 - 칼루스칼 알고리즘 */
+    private void mst() throws IOException {
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+        int nodeCnt = Integer.parseInt(stringTokenizer.nextToken());
+        int edgeCnt = Integer.parseInt(stringTokenizer.nextToken());
+        int[][] graph = new int[edgeCnt][3];
+        for (int i = 0; i < edgeCnt; i++) {
+            stringTokenizer = new StringTokenizer(bufferedReader.readLine());
+            int start = Integer.parseInt(stringTokenizer.nextToken());
+            int end = Integer.parseInt(stringTokenizer.nextToken());
+            int cost = Integer.parseInt(stringTokenizer.nextToken());
+            graph[i][0] = start;
+            graph[i][1] = end;
+            graph[i][2] = cost;
+        }
+
+        // 가중치 기준으로 오름차순 정렬
+        Arrays.sort(graph, (o1, o2) -> o1[2] - o2[2]);
+
+        parent = new int[nodeCnt + 1];
+        for (int i = 0; i < nodeCnt; i++) {
+            parent[i] = i;
+        }
+
+        kruskal(graph);
+    }
+    private void kruskal(int[][] graph) {
+        int minimumCost = 0;
+        for (int i = 0; i < graph.length; i++) {
+            if (find(graph[i][0]) != find(graph[i][1])) {
+                // start와 end의 대표노드가 같지 않으면 union으로 연결해주기
+                // start와 end의 대표노드가 같다는 건, 사이클이 있다는 의미임.
+                minimumCost += graph[i][2];
+                union(graph[i][0], graph[i][1]);
+            }
+        }
+        System.out.println("최소 가중치: " + minimumCost);
     }
 }
 
