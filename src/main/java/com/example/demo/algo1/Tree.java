@@ -14,7 +14,8 @@ import java.util.StringTokenizer;
 public class Tree {
     public void doProcess() throws IOException {
 //        findParent();
-        indexTree();
+//        indexTree();
+        indexTree2();
     }
 
     /** find parent node by children
@@ -62,8 +63,6 @@ public class Tree {
     /** 세그먼트 트리 (인덱스 트리)
      * input : 5 8 4 3 7 2 1 6
      * 1. 구간합 구하기
-     * 2. 최대값
-     * 3. 최소값
      * */
     private void indexTree() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -126,5 +125,94 @@ public class Tree {
             System.out.println();
         }
         br.close();
+    }
+
+    /** 세그먼트 트리 (인덱스 트리)
+     * input : 5 8 4 3 7 2 1 6
+     * 2. 최대값
+     * 3. 최소값
+     * */
+    private void indexTree2() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken()); // 정수 개수
+        int m = Integer.parseInt(st.nextToken()); // // 최솟,최댓값 찾는 횟수
+        long[] array = new long[n+1];
+        // 리프노드 트리에 채우기
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i ++) {
+            array[i] = Long.parseLong(st.nextToken()); // 리프노드만 입력받기
+        }
+
+        // 트리 사이즈 구하기
+        int size = getTreeSize(n);
+        long[] minSegmentTree = new long[size]; // 최솟값 세그먼트 트리
+        long[] maxSegmentTree = new long[size]; // 최대값 세그먼트 트리
+
+        // 트리 각각 초기화
+        initTree(array, minSegmentTree, 1, 0, n-1, "min");
+        initTree(array, maxSegmentTree, 1, 0, n-1, "max");
+        System.out.println("중간 체크 min : " + Arrays.toString(minSegmentTree));
+        System.out.println("중간 체크 max : " + Arrays.toString(maxSegmentTree));
+
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            long minValue = getValue(minSegmentTree, 1, 0, n-1, a, b, "min");
+            long maxValue = getValue(maxSegmentTree, 1, 0, n-1, a, b, "max");
+
+            System.out.printf("최소값: %d, 최대값: %d", minValue, maxValue);
+            System.out.println();
+        }
+        br.close();
+    }
+    private int getTreeSize(int n) {
+        // 세그먼트 트리 전체 노드 수 계산
+        // 세그먼트 트리의 높이 = logN + 1 (밑이 2인 로그)
+        int height = (int) Math.ceil(Math.log(n) / Math.log(2)) + 1;
+        return (int) Math.pow(2, height); // 전체 노드 수 = 2^트리의 높이
+    }
+    private long initTree(long[] array, long[] tree, int currentNode, int start, int end, String minOrMax) {
+        if (start == end) {
+            // 현재 노드가 리프노드인 경우, 현재 노드에 배열 값 저장
+            return tree[currentNode] = array[start];
+        } else {
+            int mid = (start + end) / 2;
+            long leftChildNodeValue = initTree(array, tree, currentNode * 2, start, mid, minOrMax); // 왼쪽 자식 노드 탐색
+            long rightChildNodeValue = initTree(array, tree, (currentNode * 2) + 1, mid + 1, end, minOrMax); // 오른쪽 자식 노드 탐색
+            if (minOrMax.equals("min")) {
+                // 최솟 값 세그먼트 트리인 경우 자식노드 중 작은 값을 가짐
+                return tree[currentNode] = Math.min(leftChildNodeValue, rightChildNodeValue);
+            } else {
+                // 최댓 값 세그먼트 트리인 경우 자식노드 중 큰 값을 가짐
+                return tree[currentNode] = Math.max(leftChildNodeValue, rightChildNodeValue);
+            }
+        }
+    }
+    private long getValue(long[] tree, int currentNode, int start, int end, int a, int b, String minOrMax) {
+        if (end < a || start > b) {
+            // 최솟, 최댓 값을 탐색할 범위가 노드가 가지는 범위를 벗어난 경우
+            return minOrMax.equals("min") ? Long.MAX_VALUE : Long.MIN_VALUE;
+        }
+
+        if (start >= a && end <= b) {
+            // 최솟, 최댓 값을 탐색할 범위가 노드가 가지는 범위보다 큰 경우 노드 값 리턴
+            return tree[currentNode];
+        }
+
+        // 그 외의 경우는 2가지가 더 존재
+        // 최솟, 최댓 값을 탐색할 범위보다 노드가 가지는 범위가 큰 경우
+        // 최솟, 최댓 값을 탐색할 범위에 노드가 가지는 범위가 일부 포함 되는 경우
+        // 위의 2가지 경우에 해당할 때는 자식노드를 탐색 후 자식노드의 값을 가져옴
+        int mid = (start + end) / 2;
+        long leftChildNodeValue = getValue(tree, currentNode * 2, start, mid, a, b, minOrMax); // 왼쪽 자식 노드 탐색
+        long rightChildNodeValue = getValue(tree, (currentNode * 2) + 1, mid + 1, end, a, b, minOrMax); // 오른쪽 자식 노드 탐색
+        if (minOrMax.equals("min")) {
+            return Math.min(leftChildNodeValue, rightChildNodeValue);
+        } else {
+            return Math.max(leftChildNodeValue, rightChildNodeValue);
+        }
     }
 }
