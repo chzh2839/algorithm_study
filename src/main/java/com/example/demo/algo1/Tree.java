@@ -15,7 +15,8 @@ public class Tree {
     public void doProcess() throws IOException {
 //        findParent();
 //        indexTree();
-        indexTree2();
+//        indexTree2();
+        lca();
     }
 
     /** find parent node by children
@@ -214,5 +215,130 @@ public class Tree {
         } else {
             return Math.max(leftChildNodeValue, rightChildNodeValue);
         }
+    }
+
+    /** LCA(최소 공통 조상)
+     * input :
+15
+1 2
+1 3
+2 4
+3 7
+6 2
+3 8
+4 9
+2 5
+5 11
+7 13
+10 4
+11 15
+12 5
+14 7
+6
+6 11
+10 9
+2 6
+7 6
+8 13
+8 15
+     * 1. 일반적인 LCA 풀이 */
+    ArrayList<ArrayList<Integer>> tree = new ArrayList<>();
+    int[] nodeDepth;
+    int[][] parent;
+    private void lca() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken()); // 정수 개수
+        for (int i = 0; i < n+1; i ++) {
+            tree.add(new ArrayList<>());
+        }
+
+        //트리 정보 저장하기
+        for (int i = 1; i < n; i ++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            tree.get(a).add(b);
+            tree.get(b).add(a);
+        }
+//        for (int i = 0; i < n+1; i++) {
+//            System.out.println("tree " + i + " : " + Arrays.toString(tree.get(i).toArray()));
+//        }
+
+        int height = getTreeHeight(n);
+        nodeDepth = new int[n+1];
+        parent = new int[n+1][height];
+        setTree(1, 1, 0); //트리 형태 구성 및 높이 설정
+//        System.out.println("node depth : " + Arrays.toString(nodeDepth));
+//        for (int i = 0; i < n+1; i++) {
+//            System.out.println("-parent " + i + " : " + Arrays.toString(parent[i]));
+//        }
+        parentInit(height, n); // 점화식을 통해 부모 노드 DP 구성
+//        for (int i = 0; i < n+1; i++) {
+//            System.out.println("parent " + i + " : " + Arrays.toString(parent[i]));
+//        }
+
+        st = new StringTokenizer(br.readLine());
+        int m = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+
+            System.out.printf("lca(%d, %d) : %d", a, b, doLca(a, b, height));
+            System.out.println();
+        }
+        br.close();
+    }
+    private int getTreeHeight(int n) {
+        return (int) Math.ceil(Math.log(n) / Math.log(2)) + 1;
+    }
+    //트리의 형태를 만드는 재귀 함수
+    private void setTree(int currentNode, int depth, int parentNode) {
+        nodeDepth[currentNode] = depth; // 현재 노드 깊이 세팅
+        parent[currentNode][0] = parentNode; // 부모 노드 세팅
+        // 자식 노드 세팅
+        for (int next: tree.get(currentNode)) {
+            if (next == parentNode) continue;
+            setTree(next, depth + 1, currentNode);
+        }
+    }
+    //부모 노드에 대한 DP 점화식을 이용하여 구성하는 함수
+    private void parentInit(int height, int n) {
+        for (int i = 1; i < height; i++) {
+            for (int j = 1; j < n+1; j++) {
+                parent[j][i] = parent[parent[j][i-1]][i-1];
+            }
+        }
+    }
+    private int doLca(int a, int b, int height) {
+        int aDepth = nodeDepth[a];
+        int bDepth = nodeDepth[b];
+        if (aDepth < bDepth) { // aDepth > bDepth로 세팅
+            int temp = a;
+            a = b;
+            b = temp;
+        }
+
+        // 높이 동일하게 맞추기
+        for (int i = height-1; i >= 0; i--) {
+            // depth[a] - depth[b]는 깊이의 차
+            // 깊이의 차만큼 이동
+            if (Math.pow(2, i) <= (nodeDepth[a] - nodeDepth[b])) {
+                a = parent[a][i];
+            }
+        }
+
+        if (a == b) return a; // a와 b가 같다면 이미 공통 조상 노드에 도착했다고 판단
+
+        // 동시에 거슬러 올라가면서, 두 노드가 같은 노드가 될때까지 반복
+        // 처음 만나는 노드가 최소 공통 조상임.
+        for (int i = height-1; i >= 0; i--) {
+            if (parent[a][i] != parent[b][i]) {
+                a = parent[a][i];
+                b = parent[b][i];
+            }
+        }
+        return parent[a][0];
     }
 }
