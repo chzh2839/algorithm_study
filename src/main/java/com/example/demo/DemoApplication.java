@@ -61,8 +61,11 @@ public class DemoApplication {
 //		Graph graph = new Graph();
 //		graph.doProcess();
 
-		Tree tree = new Tree();
-		tree.doProcess();
+//		Tree tree = new Tree();
+//		tree.doProcess();
+
+		Dp dp = new Dp();
+		dp.doProcess();
 
 		Instant finish = Instant.now(); // <= 끝나는 지점을 지정해준다
 		long elapsedTime = Duration.between(start, finish).toMillis(); // <=시작와 끝 사이의 경과시간을 계산해준다. ms단위로 끊었다.
