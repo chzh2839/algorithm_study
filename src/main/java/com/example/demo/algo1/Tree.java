@@ -341,4 +341,11 @@ public class Tree {
         }
         return parent[a][0];
     }
+
+    /** LCA(최소 공통 조상)
+     * 2. 빠르게 풀기 - 세그먼트 트리 활용 */
+    // 참고: https://loosie.tistory.com/364
+    private void lca2() throws IOException {
+
+    }
 }
