@@ -40,7 +40,6 @@ public class DemoApplication {
 //		dataStructure.slidingWindow();
 //		dataStructure.makeStack();
 //		dataStructure.makeQueue();
-//		dataStructure.makePriorityQueue();
 
 //		Sorting sorting = new Sorting();
 //		sorting.useBubbleSorting();
