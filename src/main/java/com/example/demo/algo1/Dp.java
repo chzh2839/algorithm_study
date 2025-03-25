@@ -9,7 +9,8 @@ import java.util.Scanner;
 public class Dp {
     public void doProcess() {
 //        getBinomialCoefficient();
-        fibinacci();
+//        fibinacci();
+        fillTile();
     }
 
     /** 조합 (combination)
@@ -71,5 +72,19 @@ public class Dp {
         for (int i = 2; i < array.length; i++) {
             array[i] = array[i-1] + array[i-2];
         }
+    }
+
+    /** 2*N 타일 채우기
+     * 2*N 크기의 직사각형을 채우는 방법의 수를 10,007로 나눈 나머지를 출력한다 */
+    private void fillTile() {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        array = new int[n+1];
+        array[1] = 1; // 2 * 1일 때 타일의 경우의 수 초기화
+        array[2] = 2; // 2 * 2 일 때 타일의 경우의 수 초기화
+        for (int i = 3; i <= n; i++) {
+            array[i] = (array[i-1] + array[i-2]) % 10007;
+        }
+        System.out.println(array[n]);
     }
 }
