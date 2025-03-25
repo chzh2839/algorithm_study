@@ -13,6 +13,8 @@ public class Dp {
 
     /** 조합 (combination)
      * 이항계수 구하기
+     * 1 <= N <= 10
+     * 0 <= K <= N
     */
     private void getBinomialCoefficient() {
         Scanner sc = new Scanner(System.in);
@@ -37,6 +39,6 @@ public class Dp {
         for (int i = 0; i < dpArray.length; i++) { // 1까지는 초기화했으니 2부터
             System.out.println("dpArray " + i + " : " + Arrays.toString(dpArray[i]));
         }
-        System.out.println("--- dpArray[n][k] 값 출력 --" + dpArray[n][k]);
+        System.out.println("--- dpArray[n][k] 값 출력 -- " + dpArray[n][k]);
     }
 }

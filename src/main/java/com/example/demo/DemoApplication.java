@@ -33,38 +33,8 @@ public class DemoApplication {
 		Instant start = Instant.now();  // <= 시작점을 지정해준다
 //		maniddo();
 
-//		DataStructure dataStructure = new DataStructure();
-//		dataStructure.makeScoreArg();
-//		dataStructure.makeBetweenSum();
-//		dataStructure.getCaseCount2();
-//		dataStructure.slidingWindow();
-//		dataStructure.makeStack();
-//		dataStructure.makeQueue();
-
-//		Sorting sorting = new Sorting();
-//		sorting.useBubbleSorting();
-//		sorting.useSelectionSorting();
-//		sorting.useQuickSorting();
-//		sorting.useMergeSort();
-//		sorting.useRadixSort();
-
-//		Search search = new Search();
-//		search.doProcess();
-
-//		Greedy greedy = new Greedy();
-//		greedy.doProcess();
-
-//		PrimeNumber pn = new PrimeNumber();
-//		pn.doProcess();
-
-//		Graph graph = new Graph();
-//		graph.doProcess();
-
-//		Tree tree = new Tree();
-//		tree.doProcess();
-
-		Dp dp = new Dp();
-		dp.doProcess();
+		Command cmd = new Command();
+		cmd.command();
 
 		Instant finish = Instant.now(); // <= 끝나는 지점을 지정해준다
 		long elapsedTime = Duration.between(start, finish).toMillis(); // <=시작와 끝 사이의 경과시간을 계산해준다. ms단위로 끊었다.
