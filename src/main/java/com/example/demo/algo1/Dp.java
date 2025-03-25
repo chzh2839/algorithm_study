@@ -8,7 +8,8 @@ import java.util.Scanner;
  * */
 public class Dp {
     public void doProcess() {
-        getBinomialCoefficient();
+//        getBinomialCoefficient();
+        fibinacci();
     }
 
     /** 조합 (combination)
@@ -40,5 +41,35 @@ public class Dp {
             System.out.println("dpArray " + i + " : " + Arrays.toString(dpArray[i]));
         }
         System.out.println("--- dpArray[n][k] 값 출력 -- " + dpArray[n][k]);
+    }
+
+    /**
+     * 동적 계획법
+     * - 피보나치수
+     * */
+    int[] array;
+    private void fibinacci() {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        array = new int[n+1];
+        for (int i = 0; i <= n; i++) {
+            array[i] = -1;
+        }
+        array[0] = 0; // 초기화
+        array[1] = 1; // 초기화
+//        topdown(n);
+        bottomup();
+        System.out.println(array[n]);
+    }
+    // top-down 방식 - 재귀함수 형태
+    private int topdown(int n) {
+        if (array[n] != -1) return array[n]; // 기존에 계산한 적이 있으면, 재계산하지 않고 바로 리턴
+        return array[n] = topdown(n-1) + topdown(n-2); // 메모이제이션
+    }
+    // bottom-up 방식
+    private void bottomup() {
+        for (int i = 2; i < array.length; i++) {
+            array[i] = array[i-1] + array[i-2];
+        }
     }
 }
