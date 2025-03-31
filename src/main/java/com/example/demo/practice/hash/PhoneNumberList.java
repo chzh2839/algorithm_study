@@ -3,7 +3,7 @@ package com.example.demo.practice.hash;
 import java.util.HashMap;
 
 /**
- * [ HashMap ]
+ * [ HashMap ] LV2
  * 전화번호 목록
  * 전화번호부(phone_book)에 어떤 번호가 다른 번호의 접두어면 false, 아니면 true
  * 1 <= phone_book <= 1,000,000

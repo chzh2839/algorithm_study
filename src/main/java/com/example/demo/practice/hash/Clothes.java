@@ -3,7 +3,7 @@ package com.example.demo.practice.hash;
 import java.util.HashMap;
 
 /**
- * [ HashMap ]
+ * [ HashMap ] LV2
  * 의상 - 의상종류별로 하나씩의 옷을 조합해서 코디하기. 최소 하루에 하나는 무조건 입기.
  *
  * clothes의 각 행은 [의상의 이름, 의상의 종류]로 이루어져 있습니다.

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * [ HashMap ]
+ * [ HashMap ] LV1
  * 완주하지 못한 선수 찾기
  * 마라톤 참가 선수 명단(participant)에서 완주하지 못한 단 1명의 선수 찾기
  * 1 <= participant <= 100,000

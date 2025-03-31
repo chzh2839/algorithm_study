@@ -3,7 +3,7 @@ package com.example.demo.practice.array;
 import java.util.Arrays;
 
 /**
- * 가장 큰 수 구하기
+ * 가장 큰 수 구하기 LV2
  * 정수 배열 원소 값들을 조합해서 가장 큰 수가 되게 하기
  * 1 <= numbers <= 100,000
  * 0 <= numbers의 각 원소 <= 1,000
