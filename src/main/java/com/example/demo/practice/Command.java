@@ -1,5 +1,6 @@
 package com.example.demo.practice;
 
+import com.example.demo.practice.hash.BestAlbum;
 import com.example.demo.practice.hash.Clothes;
 import com.example.demo.practice.hash.PhoneNumberList;
 
@@ -10,7 +11,8 @@ public class Command {
 //        Hindex cmd = new Hindex();
 //        FindAthlete cmd = new FindAthlete();
 //        PhoneNumberList cmd = new PhoneNumberList();
-        Clothes cmd = new Clothes();
+//        Clothes cmd = new Clothes();
+        BestAlbum cmd = new BestAlbum();
         cmd.doProcess();
     }
 }
