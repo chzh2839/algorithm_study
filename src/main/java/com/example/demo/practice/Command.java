@@ -3,6 +3,7 @@ package com.example.demo.practice;
 import com.example.demo.practice.hash.BestAlbum;
 import com.example.demo.practice.hash.Clothes;
 import com.example.demo.practice.hash.PhoneNumberList;
+import com.example.demo.practice.hash.RandomNumber;
 import com.example.demo.practice.search.MinQuadrangle;
 
 public class Command {
@@ -14,7 +15,8 @@ public class Command {
 //        PhoneNumberList cmd = new PhoneNumberList();
 //        Clothes cmd = new Clothes();
 //        BestAlbum cmd = new BestAlbum();
-        MinQuadrangle cmd = new MinQuadrangle();
+//        MinQuadrangle cmd = new MinQuadrangle();
+        RandomNumber cmd = new RandomNumber();
         cmd.doProcess();
     }
 }
