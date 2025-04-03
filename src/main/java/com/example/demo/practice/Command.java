@@ -4,6 +4,7 @@ import com.example.demo.practice.hash.BestAlbum;
 import com.example.demo.practice.hash.Clothes;
 import com.example.demo.practice.hash.PhoneNumberList;
 import com.example.demo.practice.hash.RandomNumber;
+import com.example.demo.practice.search.FindPrimeNumber;
 import com.example.demo.practice.search.MinQuadrangle;
 
 public class Command {
@@ -16,7 +17,8 @@ public class Command {
 //        Clothes cmd = new Clothes();
 //        BestAlbum cmd = new BestAlbum();
 //        MinQuadrangle cmd = new MinQuadrangle();
-        RandomNumber cmd = new RandomNumber();
+//        RandomNumber cmd = new RandomNumber();
+        FindPrimeNumber cmd = new FindPrimeNumber();
         cmd.doProcess();
     }
 }
