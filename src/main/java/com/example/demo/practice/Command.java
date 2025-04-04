@@ -4,8 +4,10 @@ import com.example.demo.practice.hash.BestAlbum;
 import com.example.demo.practice.hash.Clothes;
 import com.example.demo.practice.hash.PhoneNumberList;
 import com.example.demo.practice.hash.RandomNumber;
+import com.example.demo.practice.search.DivideWires;
 import com.example.demo.practice.search.FindPrimeNumber;
 import com.example.demo.practice.search.MinQuadrangle;
+import com.example.demo.practice.search.WordDictionary;
 
 public class Command {
     public void command() {
@@ -18,7 +20,9 @@ public class Command {
 //        BestAlbum cmd = new BestAlbum();
 //        MinQuadrangle cmd = new MinQuadrangle();
 //        RandomNumber cmd = new RandomNumber();
-        FindPrimeNumber cmd = new FindPrimeNumber();
+//        FindPrimeNumber cmd = new FindPrimeNumber();
+//        DivideWires cmd = new DivideWires();
+        WordDictionary cmd = new WordDictionary();
         cmd.doProcess();
     }
 }
