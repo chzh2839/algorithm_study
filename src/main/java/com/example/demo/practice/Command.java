@@ -8,6 +8,7 @@ import com.example.demo.practice.search.DivideWires;
 import com.example.demo.practice.search.FindPrimeNumber;
 import com.example.demo.practice.search.MinQuadrangle;
 import com.example.demo.practice.search.WordDictionary;
+import com.example.demo.practice.stackqueue.Parentheses;
 
 public class Command {
     public void command() {
@@ -22,7 +23,8 @@ public class Command {
 //        RandomNumber cmd = new RandomNumber();
 //        FindPrimeNumber cmd = new FindPrimeNumber();
 //        DivideWires cmd = new DivideWires();
-        WordDictionary cmd = new WordDictionary();
+//        WordDictionary cmd = new WordDictionary();
+        Parentheses cmd = new Parentheses();
         cmd.doProcess();
     }
 }
